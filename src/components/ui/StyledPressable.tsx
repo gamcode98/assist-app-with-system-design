@@ -1,18 +1,23 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React from 'react'
-import { Pressable, StyleSheet, Text } from 'react-native'
-import theme from '../../theme'
+import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native'
+import { theme } from '../../theme'
 
 interface Props {
   title: string
+  isLoading?: boolean
+  disabled?: boolean
   [key: string]: any
 }
 
-const StyledPressable = ({ title, ...props }: Props): JSX.Element => {
+const StyledPressable = ({ title, isLoading, disabled, ...props }: Props): JSX.Element => {
   return (
     <Pressable
-      style={[styles.button, styles.buttonClose]}
+      disabled={disabled}
+      style={[styles.button, styles.buttonClose, styles.pressableContainer]}
       {...props}
     >
+      {isLoading && <ActivityIndicator size='small' color={theme.colors.white} style={{ marginRight: 5 }} />}
       <Text style={styles.textStyle}>{title}</Text>
     </Pressable>
   )
@@ -21,6 +26,11 @@ const StyledPressable = ({ title, ...props }: Props): JSX.Element => {
 export default StyledPressable
 
 const styles = StyleSheet.create({
+  pressableContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   button: {
     borderRadius: 5,
     paddingVertical: 15,

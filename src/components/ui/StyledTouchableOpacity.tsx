@@ -1,18 +1,22 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import {
-  Align, FontWeight, FontSize, Color, Spacing, theme,
+  Align, FontWeight, FontSize, Spacing, theme,
   margins, marginsY, marginsTop, marginsBottom, marginsX, marginsLeft, marginsRight,
-  paddings, paddingsY, paddingsTop, paddingsBottom, paddingsX, paddingsLeft, paddingsRight, fontSizes, fontWeights
+  paddings, paddingsY, paddingsTop, paddingsBottom, paddingsX, paddingsLeft, paddingsRight, fontSizes, fontWeights, getBorderColors, Color, Width, widths, BorderRadius, bordersRadius
 } from '../../theme'
 
 interface Props {
   align?: Align
-  children?: string
+  children?: JSX.Element | JSX.Element[]
   color?: Color
+  borderColor?: Color
+  borderRadius?: BorderRadius
   fontSize?: FontSize
   fontWeight?: FontWeight
+  w?: Width
   subheading?: boolean
   m?: Spacing
   my?: Spacing
@@ -32,8 +36,10 @@ interface Props {
   [key: string]: any
 }
 
-const StyledText = (
-  { m, my, mt, mb, mx, ml, mr, p, py, pt, pb, px, pl, pr, align, children, color, fontSize, fontWeight, subheading, style, ...restOfProps }: Props): React.ReactElement => {
+const borderColors = getBorderColors()
+
+const StyledTouchableOpacity = (
+  { m, my, mt, mb, mx, ml, mr, p, py, pt, pb, px, pl, pr, align, children, color, borderColor, borderRadius, fontSize, fontWeight, w, subheading, style, ...restOfProps }: Props): JSX.Element => {
   const textStyles = [
     styles.text,
     margins[m as keyof typeof margins] || { margin: 0 },
@@ -43,25 +49,27 @@ const StyledText = (
     marginsX[mx as keyof typeof marginsX] || { marginHorizontal: 0 },
     marginsLeft[mx as keyof typeof marginsLeft] || { marginLeft: 0 },
     marginsRight[mx as keyof typeof marginsRight] || { marginRight: 0 },
+    paddings[p as keyof typeof paddings] || { padding: 0 },
     paddingsY[py as keyof typeof paddingsY] || { paddingVertical: 0 },
     paddingsTop[pt as keyof typeof paddingsTop] || { paddingTop: 0 },
     paddingsBottom[pb as keyof typeof paddingsBottom] || { paddingBottom: 0 },
     paddingsX[px as keyof typeof paddingsX] || { paddingHorizontal: 0 },
     paddingsLeft[pl as keyof typeof paddingsLeft] || { paddingLeft: 0 },
     paddingsRight[pr as keyof typeof paddingsRight] || { paddingRight: 0 },
-    // paddings[p as keyof typeof paddings] || { padding: 0 },
-    paddings.find(item => item.padding === p) ?? { padding: 0 },
     styles[align as keyof typeof styles] || styles.left,
+    borderColors[borderColor as keyof Color],
+    bordersRadius.find(item => item.borderRadius === borderRadius) ?? { borderRadius: 0 },
     subheading ? styles.subheading : fontSizes[1],
     fontSizes.find(item => item.fontSize === fontSize) ?? fontSizes[1],
     fontWeights.find(item => item.fontWeight === fontWeight) ?? fontWeights[0],
+    widths.find(item => item.width === `${w}%`) ?? { width: 'auto' },
     styles[color as keyof typeof styles] || styles.defaultColor,
     style
   ]
   return (
-    <Text style={textStyles} {...restOfProps}>
+    <TouchableOpacity style={textStyles} {...restOfProps}>
       {children}
-    </Text>
+    </TouchableOpacity>
   )
 }
 
@@ -83,7 +91,6 @@ const styles = StyleSheet.create({
   center: { textAlign: 'center' },
   left: { textAlign: 'left' },
   right: { textAlign: 'right' }
-
 })
 
-export default StyledText
+export default StyledTouchableOpacity

@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput } from 'react-native'
-import theme from '../../theme'
+import { theme } from '../../theme'
 
 interface Props {
   style?: {}
@@ -27,12 +27,9 @@ const StyledTextInput = ({ style = {}, error, placeholder, ...props }: Props): J
 const styles = StyleSheet.create({
   textInput: {
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: theme.colors.blue,
     paddingHorizontal: 20,
-    paddingVertical: 10
-    // marginBottom: 10
-    // width: '80%'
+    paddingVertical: 10,
+    flex: 2
   },
   error: {
     borderColor: theme.colors.red
